@@ -30,7 +30,7 @@ class Donation:
             return 'Anonymous'
 
 url = 'https://www.darujme.cz/projekt/1204937'
-auth_key = '923847293847923847238947'
+auth_key = 'jQcldDYVSiziPAwRz7ZblaARgTiyomUA'
 donation_history = []
 
 while True:

@@ -62,7 +62,7 @@ while True:
             'amount': d.display_amount()
         }
         try:
-            r = requests.get(f'http://31.31.76.93:9090/nodecg-czskm/darujme', params)
+            r = requests.get('http://31.31.76.93:9090/nodecg-czskm/darujme', params)
         except:
             print('Connection error')
 

@@ -1,2 +1,2 @@
 # czskm-darujme
-Darujme.cz donation tracking for Czechoslovak Marathon
+Official Czechoslovak Marathon tracker of Darujme.cz donations. Designed to work with [nodecg-czskm](https://github.com/KawaiiWafu/nodecg-czskm), a NodeCG bundle.

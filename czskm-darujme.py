@@ -30,7 +30,8 @@ class Donation:
             return 'Anonymous'
 
 url = 'https://www.darujme.cz/projekt/1204937'
-auth_key = 'jQcldDYVSiziPAwRz7ZblaARgTiyomUA'
+auth_key = ''
+ip = ''
 donation_history = []
 
 while True:
@@ -62,7 +63,7 @@ while True:
             'amount': d.display_amount()
         }
         try:
-            r = requests.get('http://31.31.76.93:9090/nodecg-czskm/darujme', params)
+            r = requests.get(f'http://{ip}/nodecg-czskm/darujme', params)
         except:
             print('Connection error')
 

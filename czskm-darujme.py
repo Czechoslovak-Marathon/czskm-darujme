@@ -29,7 +29,7 @@ class Donation:
         else:
             return 'Anonymous'
 
-url = 'https://www.darujme.cz/projekt/1204937'
+url = 'https://www.darujme.cz/vyzva/1202552'
 auth_key = ''
 ip = ''
 donation_history = []

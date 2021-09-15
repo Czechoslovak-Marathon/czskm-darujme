@@ -36,35 +36,41 @@ donation_history = []
 
 while True:
     donations = []
-    tree = etree.HTML(requests.get(url).text)
-    messages = tree.xpath('//div[@class=\'bubble-content\']/p')
-    meta = tree.xpath('//div[@class=\'pledgeComment-meta\']')
+    try:
+        tree = etree.HTML(requests.get(url).text)
+        messages = tree.xpath('//div[@class=\'bubble-content\']/p')
+        meta = tree.xpath('//div[@class=\'pledgeComment-meta\']')
+        total = tree.xpath('//div[@class=\'widget-current\']')
+        total_amount = int(total[0].text.strip().replace(' ', '').replace('Kč', ''))
 
-    for i, value in enumerate(messages):
-        message = value.text.strip()
-        author = meta[i].find('div[@class=\'pledgeComment-author\']').text.strip()
-        amount_element = meta[i].find('div[@class=\'pledgeComment-amount\']')
-        if amount_element is not None:
-            amount = amount_element.text.strip()
-        else:
-            amount = None
-        donation = Donation(message, author, amount)
-        donation_info =  f'{donation.message}{donation.author}{donation.amount}'.encode('utf-8')
-        donation_hash = hashlib.sha1(donation_info).hexdigest()
-        if donation_hash not in donation_history:
-            donations.append(donation)
-            donation_history.append(donation_hash)
+        for i, value in enumerate(messages):
+            message = value.text.strip()
+            author = meta[i].find('div[@class=\'pledgeComment-author\']').text.strip()
+            amount_element = meta[i].find('div[@class=\'pledgeComment-amount\']')
+            if amount_element is not None:
+                amount = amount_element.text.strip()
+            else:
+                amount = None
+            donation = Donation(message, author, amount)
+            donation_info =  f'{donation.message}{donation.author}{donation.amount}'.encode('utf-8')
+            donation_hash = hashlib.sha1(donation_info).hexdigest()
+            if donation_hash not in donation_history:
+                donations.append(donation)
+                donation_history.append(donation_hash)
 
-    for d in donations:
-        params = {
-            'key': auth_key,
-            'message': d.display_message(),
-            'author': d.display_author(),
-            'amount': d.display_amount()
-        }
-        try:
-            r = requests.get(f'http://{ip}/nodecg-czskm/darujme', params)
-        except:
-            print('Connection error')
+        for d in donations:
+            params = {
+                'key': auth_key,
+                'message': d.display_message(),
+                'author': d.display_author(),
+                'amount': d.display_amount(),
+                'total': total_amount
+            }
+            try:
+                r = requests.get(f'http://{ip}/nodecg-czskm/darujme', params)
+            except:
+                print('Connection error')
+    except:
+        print('Unknown error')
 
     time.sleep(30)

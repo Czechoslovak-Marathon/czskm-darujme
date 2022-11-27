@@ -13,10 +13,7 @@ class Donation:
         return f'Message: {self.message}\nAuthor: {self.author}\nAmount: {self.amount}'
 
     def display_message(self):
-        if self.message.startswith('['):
-            return self.message.split(']', 1)[1]
-        else:
-            return self.message
+        return self.message
 
     def display_amount(self):
         if self.amount is None:
@@ -24,12 +21,9 @@ class Donation:
         return self.amount.replace(' ', '').split('K')[0]
 
     def display_author(self):
-        if self.message.startswith('['):
-            return self.message.split(']', 1)[0][1:]
-        else:
-            return 'Anonymous'
+        return self.author
 
-url = 'https://www.darujme.cz/vyzva/1202552'
+url = 'https://www.darujme.cz/vyzva/1202805'
 auth_key = ''
 ip = ''
 donation_history = []
@@ -45,7 +39,10 @@ while True:
 
         for i, value in enumerate(messages):
             message = value.text.strip()
-            author = meta[i].find('div[@class=\'pledgeComment-author\']').text.strip()
+            author_data = meta[i].find('div[@class=\'pledgeComment-author\']')
+            if author_data is None:
+                author_data = meta[i].find('div[@class=\'pledgeComment-author pledgeComment-anonymous\']')
+            author = author_data.text.strip()
             amount_element = meta[i].find('div[@class=\'pledgeComment-amount\']')
             if amount_element is not None:
                 amount = amount_element.text.strip()
